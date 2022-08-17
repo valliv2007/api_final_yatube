@@ -9,12 +9,12 @@ class Group(models.Model):
     slug = models.SlugField(unique=True, verbose_name='URL группы')
     description = models.TextField(verbose_name='Описание группы')
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name = 'Group of post'
         verbose_name_plural = 'Groups of post'
+
+    def __str__(self):
+        return self.title
 
 
 class Post(models.Model):
@@ -31,12 +31,12 @@ class Post(models.Model):
         Group, on_delete=models.CASCADE,
         related_name='posts', blank=True, null=True, verbose_name='Группа')
 
-    def __str__(self):
-        return self.text
-
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
+
+    def __str__(self):
+        return self.text
 
 
 class Comment(models.Model):
@@ -50,8 +50,7 @@ class Comment(models.Model):
         verbose_name='Пост для комментария')
     text = models.TextField(verbose_name='Текст комментария')
     created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True
-    )
+        'Дата добавления', auto_now_add=True, db_index=True)
 
     class Meta:
         verbose_name = 'Post comment'
@@ -71,5 +70,5 @@ class Follow(models.Model):
     class Meta:
         verbose_name = 'Follow'
         verbose_name_plural = 'Follows'
-        constraints = [models.UniqueConstraint(fields=['user', 'following'],
-                       name='unique_subscribe')]
+        constraints = (models.UniqueConstraint(fields=('user', 'following'),
+                       name='unique_subscribe'),)
